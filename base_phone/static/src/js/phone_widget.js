@@ -99,10 +99,12 @@ odoo.define('base_phone.phone_widget', function (require) {
         core.form_widget_registry.add('fax', FieldFax);
     }
 
-    if(!core.form_widget_registry.get('phone')){
-        core.form_widget_registry.add('phone', FieldPhone);
-    }
-
+    /**
+     *Always replace this widget to prevent using the default enterprise phone widget
+     *We've chosen the .map instead of "add" because the add method might be changed in the future
+     *Now the add function always maps to the key (replaces if exists)
+     */
+    core.form_widget_registry.map['phone'] = FieldPhone;
 
     var treewidgets = require('web.ListView');
 
@@ -123,8 +125,11 @@ odoo.define('base_phone.phone_widget', function (require) {
     });
 
 
-    if (!core.list_widget_registry.get('phone')) {
-        core.list_widget_registry.add('field.phone', ColumnPhone);
-    }
+    /**
+     *Always replace this widget to prevent using the default enterprise phone widget
+     *We've chosen the .map instead of "add" because the add method might be changed in the future
+     *Now the add function always maps to the key (replaces if exists)
+     */
+    core.list_widget_registry.map['field.phone'] = ColumnPhone;
 
 });
