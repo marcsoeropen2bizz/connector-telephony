@@ -1,22 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * base_phone
-# 
+#
 # Translators:
 # OCA Transbot <transbot@odoo-community.org>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-25 03:36+0000\n"
-"PO-Revision-Date: 2017-01-25 03:36+0000\n"
+"POT-Creation-Date: 2017-06-24 19:50+0000\n"
+"PO-Revision-Date: 2017-06-24 19:50+0000\n"
 "Last-Translator: OCA Transbot <transbot@odoo-community.org>, 2016\n"
 "Language-Team: Slovenian (https://www.transifex.com/oca/teams/23907/sl/)\n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: sl\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3);\n"
 
 #. module: base_phone
 #: model:ir.model.fields,field_description:base_phone.field_number_not_found_calling_number
@@ -30,14 +31,14 @@ msgstr "Preklic"
 
 #. module: base_phone
 #. openerp-web
-#: code:addons/base_phone/static/src/js/phone_widget.js:57
+#: code:addons/base_phone/static/src/js/phone_widget.js:58
 #, python-format
 msgid "Click2dial started"
 msgstr "Click2dial zagnan"
 
 #. module: base_phone
 #. openerp-web
-#: code:addons/base_phone/static/src/js/phone_widget.js:70
+#: code:addons/base_phone/static/src/js/phone_widget.js:71
 #, python-format
 msgid "Click2dial successfull"
 msgstr "Click2dial uspešen"
@@ -143,6 +144,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: base_phone
+#: model:ir.model.fields,help:base_phone.field_base_config_settings_number_of_digits_to_match_from_end
 #: model:ir.model.fields,help:base_phone.field_res_company_number_of_digits_to_match_from_end
 msgid ""
 "In several situations, Odoo will have to find a Partner/Lead/Employee/... "
@@ -196,7 +198,7 @@ msgstr "Številka pretvorjena v mednarodni format:"
 
 #. module: base_phone
 #. openerp-web
-#: code:addons/base_phone/static/src/js/phone_widget.js:71
+#: code:addons/base_phone/static/src/js/phone_widget.js:72
 #, python-format
 msgid "Number dialed:"
 msgstr "Klicana številka:"
@@ -207,6 +209,7 @@ msgid "Number not found"
 msgstr "Številka ni najdena"
 
 #. module: base_phone
+#: model:ir.model.fields,field_description:base_phone.field_base_config_settings_number_of_digits_to_match_from_end
 #: model:ir.model.fields,field_description:base_phone.field_res_company_number_of_digits_to_match_from_end
 msgid "Number of Digits To Match From End"
 msgstr "Število znakov od konca številke za primerjavo"
@@ -233,7 +236,7 @@ msgid "Partner: %s"
 msgstr "Partner: %s"
 
 #. module: base_phone
-#: model:ir.ui.view,arch_db:base_phone.view_company_form
+#: model:ir.ui.view,arch_db:base_phone.view_general_configuration
 msgid "Phone"
 msgstr "Telefon"
 
@@ -299,8 +302,7 @@ msgstr "Nastavitve telefonije"
 #. module: base_phone
 #: sql_constraint:res.company:0
 msgid ""
-"The value of the field 'Number of Digits To Match From End' must be "
-"positive."
+"The value of the field 'Number of Digits To Match From End' must be positive."
 msgstr ""
 "Vrednost polja 'Število znakov od konca številke za primerjavo' mora biti "
 "pozitivna."
@@ -316,7 +318,7 @@ msgstr ""
 
 #. module: base_phone
 #. openerp-web
-#: code:addons/base_phone/static/src/js/phone_widget.js:58
+#: code:addons/base_phone/static/src/js/phone_widget.js:59
 #, python-format
 msgid "Unhook your ringing phone"
 msgstr "Dvigni slušalko pri zvonjenju"
@@ -329,6 +331,11 @@ msgstr "Posodobitev partnerja s to številko"
 #. module: base_phone
 #: model:ir.model,name:base_phone.model_base
 msgid "base"
+msgstr ""
+
+#. module: base_phone
+#: model:ir.model,name:base_phone.model_base_config_settings
+msgid "base.config.settings"
 msgstr ""
 
 #. module: base_phone

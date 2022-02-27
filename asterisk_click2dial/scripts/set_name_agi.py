@@ -1,6 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
-#  © 2010-2016 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
+#  Copyright 2010-2019 Akretion France
+#  @author: Alexis de Lattre <alexis.delattre@akretion.com>
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as
@@ -95,10 +96,11 @@
 import xmlrpclib
 import sys
 from optparse import OptionParser
+from asterisk import agi as agilib  # pip install pyst2
 
 __author__ = "Alexis de Lattre <alexis.delattre@akretion.com>"
-__date__ = "June 2015"
-__version__ = "0.6"
+__date__ = "December 2019"
+__version__ = "0.8"
 
 # Name that will be displayed if there is no match
 # and no geolocalisation. Set it to False if you don't want
@@ -112,8 +114,9 @@ options = [
         'help': 'DNS or IP address of the Odoo server. Default = none '
         '(will not try to connect to Odoo)'},
     {'names': ('-p', '--port'), 'dest': 'port', 'type': 'int',
-        'action': 'store', 'default': 8069,
-        'help': "Port of Odoo's XML-RPC interface. Default = 8069"},
+        'action': 'store', 'default': False,
+        'help': "Port of Odoo's webservice interface. Default = 443 when SSL is on, "
+        "8069 when SSL is off"},
     {'names': ('-e', '--ssl'), 'dest': 'ssl',
         'help': "Use SSL connections instead of clear connections. "
         "Default = no, use clear XML-RPC or JSON-RPC",
@@ -178,27 +181,9 @@ options = [
 ]
 
 
-def stdout_write(string):
-    '''Wrapper on sys.stdout.write'''
-    sys.stdout.write(string.encode(sys.stdout.encoding or 'utf-8', 'replace'))
-    sys.stdout.flush()
-    # When we output a command, we get an answer "200 result=1" on stdin
-    # Purge stdin to avoid these Asterisk error messages :
-    # utils.c ast_carefulwrite: write() returned error: Broken pipe
-    sys.stdin.readline()
-    return True
-
-
-def stderr_write(string):
-    '''Wrapper on sys.stderr.write'''
-    sys.stderr.write(string.encode(sys.stdout.encoding or 'utf-8', 'replace'))
-    sys.stdout.flush()
-    return True
-
-
 def geolocate_phone_number(number, my_country_code, lang):
     import phonenumbers
-    import phonenumbers.geocoder
+    import phonenumbers.geocoder  # Takes an enormous amount of time...
     res = ''
     phonenum = phonenumbers.parse(number, my_country_code.upper())
     city = phonenumbers.geocoder.description_for_number(phonenum, lang.lower())
@@ -237,69 +222,46 @@ def main(options, arguments):
     # print 'options = %s' % options
     # print 'arguments = %s' % arguments
 
-    # AGI passes parameters to the script on standard input
-    stdinput = {}
-    while 1:
-        input_line = sys.stdin.readline()
-        if not input_line:
-            break
-        line = input_line.strip()
-        try:
-            variable, value = line.split(':')
-        except:
-            break
-        if variable[:4] != 'agi_':  # All AGI parameters start with 'agi_'
-            stderr_write("bad stdin variable : %s\n" % variable)
-            continue
-        variable = variable.strip()
-        value = value.strip()
-        if variable and value:
-            stdinput[variable] = value
-    stderr_write("full AGI environnement :\n")
-
-    for variable in stdinput.keys():
-        stderr_write("%s = %s\n" % (variable, stdinput.get(variable)))
+    agi = agilib.AGI()
 
     if options.outgoing:
-        phone_number = stdinput.get('agi_%s' % options.outgoing_agi_var)
-        stdout_write('VERBOSE "Dialed phone number is %s"\n' % phone_number)
+        phone_number = agi.env['agi_%s' % options.outgoing_agi_var]
+        agi.verbose("Dialed phone number is %s" % phone_number)
     else:
         # If we already have a "True" caller ID name
         # i.e. not just digits, but a real name, then we don't try to
         # connect to Odoo or geoloc, we just keep it
+        phone_chars = [str(d) for d in range(10)]
+        phone_chars += ['+']
         if (
-                stdinput.get('agi_calleridname') and
-                not stdinput.get('agi_calleridname').isdigit() and
-                stdinput.get('agi_calleridname').lower()
+                agi.env.get('agi_calleridname') and
+                any([x not in phone_chars for x in agi.env['agi_calleridname']]) and
+                agi.env['agi_calleridname'].lower()
                 not in ['asterisk', 'unknown', 'anonymous'] and
                 not options.notify):
-            stdout_write(
-                'VERBOSE "Incoming CallerID name is %s"\n'
-                % stdinput.get('agi_calleridname'))
-            stdout_write(
-                'VERBOSE "As it is a real name, we do not change it"\n')
+            agi.verbose(
+                "Incoming CallerID name is %s"
+                % agi.env['agi_calleridname'])
+            agi.verbose("As it is a real name, we do not change it")
             return True
 
-        phone_number = stdinput.get('agi_callerid')
-
-    stderr_write('stdout encoding = %s\n' % sys.stdout.encoding or 'utf-8')
+        phone_number = agi.env['agi_callerid']
 
     if not isinstance(phone_number, str):
-        stdout_write('VERBOSE "Phone number is empty"\n')
+        agi.verbose("Phone number is empty")
         exit(0)
     # Match for particular cases and anonymous phone calls
     # To test anonymous call in France, dial 3651 + number
     if not phone_number.isdigit():
-        stdout_write(
-            'VERBOSE "Phone number (%s) is not a digit"\n' % phone_number)
+        agi.verbose("Phone number (%s) is not a digit" % phone_number)
         exit(0)
 
-    stdout_write('VERBOSE "Phone number = %s"\n' % phone_number)
+    agi.verbose("Phone number = %s" % phone_number)
 
     if options.notify and not arguments:
-        stdout_write(
-            'VERBOSE "When using the notify option, you must give arguments '
-            'to the script"\n')
+        agi.verbose(
+            "When using the notify option, you must give arguments "
+            "to the script")
         exit(0)
 
     if options.notify:
@@ -307,38 +269,44 @@ def main(options, arguments):
     else:
         method = 'get_name_from_phone_number'
 
+    if options.port:
+        port = options.port
+    # default port depends on protocol
+    else:
+        if options.ssl:
+            port = 443
+        else:
+            port = 8069
+
     res = False
     # Yes, this script can be used without "-s odoo_server" !
     if options.server and options.jsonrpc:
         import odoorpc
         proto = options.ssl and 'jsonrpc+ssl' or 'jsonrpc'
-        stdout_write(
-            'VERBOSE "Starting %s request on Odoo %s:%d database '
-            '%s username %s"\n' % (
-                proto.upper(), options.server, options.port, options.database,
+        agi.verbose(
+            "Starting %s request on Odoo %s:%d database %s username %s" % (
+                proto.upper(), options.server, port, options.database,
                 options.username))
         try:
-            odoo = odoorpc.ODOO(options.server, proto, options.port)
+            odoo = odoorpc.ODOO(options.server, proto, port)
             odoo.login(options.database, options.username, options.password)
             if options.notify:
                 res = odoo.execute(
                     'phone.common', method, phone_number, arguments)
             else:
                 res = odoo.execute('phone.common', method, phone_number)
-            stdout_write('VERBOSE "Called method %s"\n' % method)
+            agi.verbose("Called method %s" % method)
         except:
-            stdout_write(
-                'VERBOSE "Could not connect to Odoo in JSON-RPC"\n')
+            agi.verbose("Could not connect to Odoo in JSON-RPC")
     elif options.server:
         proto = options.ssl and 'https' or 'http'
-        stdout_write(
-            'VERBOSE "Starting %s XML-RPC request on Odoo %s:%d '
-            'database %s user ID %d"\n' % (
-                proto, options.server, options.port, options.database,
+        agi.verbose(
+            "Starting %s XML-RPC request on Odoo %s:%d "
+            "database %s user ID %d" % (
+                proto, options.server, port, options.database,
                 options.userid))
         sock = xmlrpclib.ServerProxy(
-            '%s://%s:%d/xmlrpc/object'
-            % (proto, options.server, options.port))
+            '%s://%s:%d/xmlrpc/object' % (proto, options.server, port))
         try:
             if options.notify:
                 res = sock.execute(
@@ -348,9 +316,9 @@ def main(options, arguments):
                 res = sock.execute(
                     options.database, options.userid, options.password,
                     'phone.common', method, phone_number)
-            stdout_write('VERBOSE "Called method %s"\n' % method)
+            agi.verbose("Called method %s" % method)
         except:
-            stdout_write('VERBOSE "Could not connect to Odoo in XML-RPC"\n')
+            agi.verbose("Could not connect to Odoo in XML-RPC")
         # To simulate a long execution of the XML-RPC request
         # import time
         # time.sleep(5)
@@ -361,15 +329,15 @@ def main(options, arguments):
             res = res[0:options.max_size]
     elif options.geoloc:
         # if the number is not found in Odoo, we try to geolocate
-        stdout_write(
-            'VERBOSE "Trying to geolocate with country %s and lang %s"\n'
+        agi.verbose(
+            "Trying to geolocate with country %s and lang %s"
             % (options.country, options.lang))
         res = geolocate_phone_number(
             phone_number, options.country, options.lang)
     else:
         # if the number is not found in Odoo and geoloc is off,
         # we put 'not_found_name' as Name
-        stdout_write('VERBOSE "Phone number not found in Odoo"\n')
+        agi.verbose("Phone number not found in Odoo")
         res = not_found_name
 
     # All SIP phones should support UTF-8...
@@ -378,12 +346,13 @@ def main(options, arguments):
     if options.ascii:
         res = convert_to_ascii(res)
 
-    stdout_write('VERBOSE "Name = %s"\n' % res)
+    agi.verbose("Name = %s" % res)
     if res:
         if options.outgoing:
-            stdout_write('SET VARIABLE connectedlinename "%s"\n' % res)
+            agi.set_variable('connectedlinename', res)
         else:
-            stdout_write('SET CALLERID "%s"<%s>\n' % (res, phone_number))
+            callerid_encoded = (u'"%s"<%s>' % (res, phone_number)).encode('utf-8')
+            agi.set_callerid(callerid_encoded)
     return True
 
 
