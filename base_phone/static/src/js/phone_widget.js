@@ -1,15 +1,26 @@
+
 /* Base phone module for Odoo
    Copyright (C) 2013-2018 Akretion France
    @author: Alexis de Lattre <alexis.delattre@akretion.com>
    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). */
 
-odoo.define("base_phone.updatedphone_widget", function (require) {
+   odoo.define("base_phone.updatedphone_widget", function (require) {
     "use strict";
 
     var core = require("web.core");
     var FieldPhone = require("web.basic_fields").FieldPhone;
     var _t = core._t;
-
+    var FormController = require('web.FormController');
+    var formController = FormController.include({
+        _onButtonClicked: function (event) {
+        
+        console.log('Test');
+        
+        
+        }
+        
+        
+        });
     FieldPhone.include({
         /* Always enable phone link tel:, not only on small screens  */
         _canCall: function () {
@@ -20,7 +31,6 @@ odoo.define("base_phone.updatedphone_widget", function (require) {
             // and set to true
             return false;
         },
-
         _renderReadonly: function () {
             // Create a link to trigger action on server
             // this link will be after the <a href="tel:">
@@ -53,12 +63,13 @@ odoo.define("base_phone.updatedphone_widget", function (require) {
             /* eslint-enable no-unused-vars */
         },
         click2dial: function (phone_num) {
+
             var self = this;
-            this.do_notify(
-                _.str.sprintf(_t("Click2dial to %s"), phone_num),
-                _t("Unhook your ringing phone"),
-                false
-            );
+            this.displayNotification({
+
+                title: _.str.sprintf(_t("Click2dial to %s"), phone_num),
+                message: _t("Unhook your ringing phone"),
+            });
             var params = {
                 phone_number: phone_num,
                 click2dial_model: this.model,
@@ -74,13 +85,18 @@ odoo.define("base_phone.updatedphone_widget", function (require) {
                 function (r) {
                     console.log("successfull", r);
                     if (r === false) {
-                        self.do_warn("Click2dial failed");
+                        self.displayNotification({
+                            message: "Click2dial failed",
+                            type: "danger",
+                        });
                     } else if (typeof r === "object") {
-                        self.do_notify(
-                            _t("Click2dial successfull"),
-                            _.str.sprintf(_t("Number dialed: %s"), r.dialed_number),
-                            false
-                        );
+                        self.displayNotification({
+                            title: _t("Click2dial successfull"),
+                            message: _.str.sprintf(
+                                _t("Number dialed: %s"),
+                                r.dialed_number
+                            ),
+                        });
                         if (r.action_model) {
                             var action = {
                                 name: r.action_name,
@@ -97,7 +113,10 @@ odoo.define("base_phone.updatedphone_widget", function (require) {
                 },
                 function (r) {
                     console.log("on error");
-                    self.do_warn("Click2dial failed");
+                    self.displayNotification({
+                        message: "Click2dial failed",
+                        type: "danger",
+                    });
                 }
                 /* eslint-enable no-unused-vars */
             );

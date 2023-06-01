@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="show_phone_button" model="ir.ui.view">
+        <field name="name">base.phone.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="after">
+                <div class="call_button">
+                    <button type="object" name="clickToDial" string="Call">
+                        <div class="fa fa-volume-control-phone fa-lg"></div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <record id="show_mobile_button" model="ir.ui.view">
+        <field name="name">base.mobile.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='mobile']" position="after">
+                <div class="mobile_call_button">
+                    <button type="object" name="clickToDialMobile" string="Mobile">
+                        <div class="fa fa-mobile-phone fa-lg"></div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
