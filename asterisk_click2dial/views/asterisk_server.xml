@@ -54,7 +54,7 @@
                     <field name="login" />
                     <field name="password" password="True" />
                     <button
-                            name="test_ari_connection"
+                            name="test_ami_connection"
                             type="object"
                             string="Test Connection to Asterisk"
                             class="btn-default"

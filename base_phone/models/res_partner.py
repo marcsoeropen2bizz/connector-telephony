@@ -7,9 +7,13 @@ from odoo import models
 
 
 class ResPartner(models.Model):
-    _inherit = "res.partner"
-
+    _name = "res.partner"
+    # inherit on phone.validation.mixin (same as in crm_phone_validation,
+    # but base_phone only depends on phone_validation,
+    # not on crm_phone_validation)
+    _inherit = ["res.partner"]
     _phone_name_sequence = 10
+    _phone_name_fields = ["phone", "mobile"]
 
     def name_get(self):
         if self._context.get("callerid"):
