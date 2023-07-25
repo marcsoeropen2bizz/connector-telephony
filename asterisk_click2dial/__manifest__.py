@@ -20,10 +20,17 @@
         "security/asterisk_security.xml",
         "views/res_partner.xml",
         
+ 
     ],
     "demo": ["demo/asterisk_click2dial_demo.xml"],
-    "assets": {
-        "web.assets_backend": ["/asterisk_click2dial/static/src/js/asterisk_click2dial.js"],
+    'assets': {
+        "web.assets_backend": [
+        'asterisk_click2dial/static/src/**/*.js',
+        'asterisk_click2dial/static/src/**/*.xml',
+        ],  
+        "web.assets_common":[
+        
+        ]
         
     },
     "application": True,
