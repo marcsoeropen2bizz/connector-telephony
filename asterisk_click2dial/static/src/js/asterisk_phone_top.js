@@ -27,7 +27,7 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
                 // console.log('RESULT RPC type r='+typeof r);
                 // console.log('RESULT RPC isNaN r='+isNaN(r));
                 if (r === false) {
-                    self.do_warn(
+                    this.do_warn(
                         _t("IPBX error"),
                         _t(
                             "Calling party number not retreived from IPBX or IPBX unreachable by Odoo"
@@ -35,7 +35,7 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
                         false
                     );
                 } else if (typeof r === "string" && isNaN(r)) {
-                    self.do_warn(
+                    this.do_warn(
                         r,
                         _t("The calling number is not a phone number!"),
                         false
@@ -50,9 +50,9 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
                         target: "new",
                         context: { default_calling_number: r },
                     };
-                    self.do_action(action);
+                    this.do_action(action);
                 } else if (typeof r === "object" && r.length === 3) {
-                    self.do_notify(
+                    this.do_notify(
                         _.str.sprintf(_t("On the phone with '%s'"), r[2]),
                         _.str.sprintf(
                             _t("Moving to form view of %s (%s ID %d)"),
