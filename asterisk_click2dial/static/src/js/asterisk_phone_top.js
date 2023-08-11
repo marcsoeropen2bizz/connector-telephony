@@ -5,8 +5,9 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
 
     var SystrayMenu = require("web.SystrayMenu");
     var Widget = require("web.Widget");
+    var core = require('web.core');
     var _t = core._t;
-    
+
     var OpenCallerMenu = Widget.extend({
         name: "open_caller",
         template: "asterisk_click2dial.systray.OpenCaller",
