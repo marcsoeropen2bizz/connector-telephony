@@ -17,7 +17,7 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
 
         on_open_caller: function (event) {
             event.stopPropagation();
-            var self = this;
+            //var self = this;
             var context = this.getSession().user_context;
             self._rpc({
                 route: "/asterisk_click2dial/get_record_from_my_channel",
@@ -59,9 +59,9 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
                             message: _.str.sprintf(_t("Moving to form view of %s (%s ID %d)"),
                             r[2],
                             r[0],
-                            r[1])
+                            r[1]
+                            )
                         },
-
                         false
                     );
                     var action = {
