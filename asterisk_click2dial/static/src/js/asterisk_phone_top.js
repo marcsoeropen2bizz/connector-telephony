@@ -27,18 +27,19 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
                 // console.log('RESULT RPC type r='+typeof r);
                 // console.log('RESULT RPC isNaN r='+isNaN(r));
                 if (r === false) {
-                    this.do_warn(
-                        _t("IPBX error"),
-                        _t(
-                            "Calling party number not retreived from IPBX or IPBX unreachable by Odoo"
-                        ),
-                        false
+                    this.displayNotification({
+                        title: _t("IPBX error"),
+                        message: _t("Calling party number not retreived from IPBX or IPBX unreachable by Odoo"),
+                        type: 'danger',
+                    },false
+                        
                     );
                 } else if (typeof r === "string" && isNaN(r)) {
-                    this.do_warn(
-                        r,
-                        _t("The calling number is not a phone number!"),
-                        false
+                    this.displayNotification({
+                        title: _t(r+ " is not a number"),
+                        message: _t("The calling number is not a phone number!"),
+                    },
+                    false
                     );
                 } else if (typeof r === "string") {
                     var action = {
@@ -52,14 +53,15 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
                     };
                     this.do_action(action);
                 } else if (typeof r === "object" && r.length === 3) {
-                    this.do_notify(
-                        _.str.sprintf(_t("On the phone with '%s'"), r[2]),
-                        _.str.sprintf(
-                            _t("Moving to form view of %s (%s ID %d)"),
+                    this.displayNotification(
+                        {
+                            message: _.str.sprintf(_t("On the phone with '%s'"), r[2]),
+                            message: _.str.sprintf(_t("Moving to form view of %s (%s ID %d)"),
                             r[2],
                             r[0],
-                            r[1]
-                        ),
+                            r[1])
+                        },
+
                         false
                     );
                     var action = {
