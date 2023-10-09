@@ -7,6 +7,7 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
     var Widget = require("web.Widget");
     var core = require('web.core');
     var _t = core._t;
+    var Dialog = require('web.Dialog');
 
     var OpenCallerMenu = Widget.extend({
         name: "open_caller",
@@ -17,27 +18,19 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
 
         on_open_caller: function (event) {
             event.stopPropagation();
-            //var self = this;
+            var self = this;
             var context = this.getSession().user_context;
-            self._rpc({
-                route: "/asterisk_click2dial/get_record_from_my_channel",
+            this._rpc({
+                route: "/asterisk_ click2dial/get_record_from_my_channel",
                 params: { local_context: context },
             }).then(function (r) {
-                // Console.log('RESULT RPC r='+r);
-                // console.log('RESULT RPC type r='+typeof r);
-                // console.log('RESULT RPC isNaN r='+isNaN(r));
                 if (r === false) {
-                    this.displayNotification({
+                    Dialog.alert(self, _t("Calling party number not retreived from IPBX or IPBX unreachable by Odoo"),{
                         title: _t("IPBX error"),
-                        message: _t("Calling party number not retreived from IPBX or IPBX unreachable by Odoo"),
-                        type: 'danger',
-                    },false
-                        
-                    );
+                    }),false     
                 } else if (typeof r === "string" && isNaN(r)) {
-                    this.displayNotification({
+                    Dialog.alert(self, _t("The calling number is not a phone number!"),{
                         title: _t(r+ " is not a number"),
-                        message: _t("The calling number is not a phone number!"),
                     },
                     false
                     );
@@ -51,9 +44,9 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
                         target: "new",
                         context: { default_calling_number: r },
                     };
-                    this.do_action(action);
+                    self.do_action(action);
                 } else if (typeof r === "object" && r.length === 3) {
-                    this.displayNotification(
+                    self.displayNotification(
                         {
                             message: _.str.sprintf(_t("On the phone with '%s'"), r[2]),
                             message: _.str.sprintf(_t("Moving to form view of %s (%s ID %d)"),
@@ -71,12 +64,12 @@ odoo.define("asterisk_click2dial.systray.phone_top", function (require) {
                         view_mode: "form,tree",
                         views: [[false, "form"]],
                         /* If you want to make it work with the 'web' module
-                of Odoo Enterprise edition, you have to change the line
-                target: 'current',
-                  to:
-                target: 'new',
-                If you want to use target: 'current', with web/enterprise,
-                you have to reload the Web page just after */
+                            of Odoo Enterprise edition, you have to change the line
+                            target: 'current',
+                            to:
+                            target: 'new',
+                            If you want to use target: 'current', with web/enterprise,
+                            you have to reload the Web page just after */
                         target: "current",
                         context: {},
                     };
