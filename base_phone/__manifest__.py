@@ -12,7 +12,7 @@
     "author": "Akretion,Odoo Community Association (OCA)",
     "maintainers": ["alexis-via"],
     "website": "https://github.com/OCA/connector-telephony",
-    "depends": ["phone_validation", "base_setup"],
+    "depends": ["phone_validation", "base_setup", "base"],
     "external_dependencies": {"python": ["phonenumbers"]},
     "data": [
         "security/phone_security.xml",

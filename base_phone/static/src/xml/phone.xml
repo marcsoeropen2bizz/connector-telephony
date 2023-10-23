@@ -11,7 +11,7 @@
             <a
                 href="#"
                 target="_blank"
-                class="fa fa-lg fa-phone"
+                class="fa fa-phone"
                 aria-label="Dial"
                 title="Dial"
             />

@@ -5,10 +5,18 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
+        <xpath expr="//field[@name='phone']" position="attributes">
+        <attribute name="widget"></attribute>
+        </xpath>
+        <xpath expr="//field[@name='mobile']" position="attributes">
+        <attribute name="widget"></attribute>
+        </xpath>
+
+
             <xpath expr="//field[@name='phone']" position="after">
                 <div class="call_button">
                     <button type="object" name="clickToDial" string="Call">
-                        <div class="fa fa-volume-control-phone fa-lg" title="phone"></div>
+                        <div class="fa fa-phone" title="phone"></div>
                     </button>
                 </div>
             </xpath>
