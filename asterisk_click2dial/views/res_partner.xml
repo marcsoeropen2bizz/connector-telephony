@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- remove button from res.partner and add click2dial button -->
     <record id="show_phone_button" model="ir.ui.view">
         <field name="name">base.phone.button</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-        <xpath expr="//field[@name='phone']" position="attributes">
-        <attribute name="widget"></attribute>
-        </xpath>
-        <xpath expr="//field[@name='mobile']" position="attributes">
-        <attribute name="widget"></attribute>
-        </xpath>
-
-
+            <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="widget"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='mobile']" position="attributes">
+                <attribute name="widget"></attribute>
+            </xpath>
             <xpath expr="//field[@name='phone']" position="after">
                 <div class="call_button">
                     <button type="object" name="clickToDial" string="Call">
@@ -21,8 +20,8 @@
                 </div>
             </xpath>
         </field>
-
     </record>
+
     <record id="show_mobile_button" model="ir.ui.view">
         <field name="name">base.mobile.button</field>
         <field name="model">res.partner</field>
@@ -37,4 +36,5 @@
             </xpath>
         </field>
     </record>
+
 </odoo>

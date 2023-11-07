@@ -1,0 +1,21 @@
+<odoo>
+    <!-- remove button from project.task and add click2dial button -->
+
+    <record id="project_task_phone_button" model="ir.ui.view">
+        <field name="name">project.task.phone.button</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_phone']" position="attributes">
+                <attribute name="widget"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_phone']" position="after">
+                <div class="call_button">
+                    <button type="object" name="clickToDial" string="Call">
+                        <div class="fa fa-phone" title="phone"></div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
