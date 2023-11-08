@@ -8,11 +8,8 @@ odoo.define("asterisk_click2dial.systray.OpenCaller", function (require) {
     "use strict";
 
     var core = require("web.core");
-    var SystrayMenu = require("web.SystrayMenu");
-    var Widget = require("web.Widget");
 
     var _t = core._t;
-
     var FieldPhone = require("base_phone.updatedphone_widget").FieldPhone;
 
     FieldPhone.include({
@@ -21,4 +18,8 @@ odoo.define("asterisk_click2dial.systray.OpenCaller", function (require) {
         },
     });
 
-});
+})
+
+
+
+

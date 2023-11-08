@@ -1,0 +1,22 @@
+
+<odoo>
+    <!-- remove button from helpdesk.ticket and add click2dial button -->
+
+    <record id="helpdesk_phone_button" model="ir.ui.view">
+        <field name="name">helpdesk.phone.button</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_phone']" position="attributes">
+                <attribute name="widget"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_phone']" position="after">
+                <div class="call_button">
+                    <button type="object" name="clickToDial" string="Call">
+                        <div class="fa fa-phone" title="phone"></div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

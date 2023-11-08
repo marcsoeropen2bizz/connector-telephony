@@ -22,6 +22,7 @@
         
         });
     FieldPhone.include({
+        
         /* Always enable phone link tel:, not only on small screens  */
         _canCall: function () {
             return true;
@@ -63,7 +64,6 @@
             /* eslint-enable no-unused-vars */
         },
         click2dial: function (phone_num) {
-
             var self = this;
             this.displayNotification({
 

@@ -11,7 +11,7 @@
     "author": "Akretion,Odoo Community Association (OCA)",
     "maintainers": ["alexis-via"],
     "website": "https://github.com/OCA/connector-telephony",
-    "depends": ["base_phone"],
+    "depends": ["base_phone","crm", "helpdesk","project"],
     "external_dependencies": {"python": ["requests"]},
     "data": [
         "views/asterisk_server.xml",
@@ -19,11 +19,20 @@
         "security/ir.model.access.csv",
         "security/asterisk_security.xml",
         "views/res_partner.xml",
+        "views/crm_lead.xml",
+        "views/helpdesk_ticket.xml"
         
+ 
     ],
     "demo": ["demo/asterisk_click2dial_demo.xml"],
-    "assets": {
-        "web.assets_backend": ["/asterisk_click2dial/static/src/js/asterisk_click2dial.js"],
+    'assets': {
+        "web.assets_backend": [
+        'asterisk_click2dial/static/src/**/*.js',
+        'asterisk_click2dial/static/src/**/*.xml',
+        ],  
+        "web.assets_common":[
+        
+        ]
         
     },
     "application": True,
