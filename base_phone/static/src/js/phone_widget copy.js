@@ -7,14 +7,15 @@ import { useService } from "@web/core/utils/hooks";
 export class BPPhoneField extends PhoneField {
     setup(){
         this.rpc = useService("rpc");
-        console.log(this.phoneHref);        
+        console.log(this);
     }
     get phoneHref() {
-        return "/my"
+        return this.rpc("/asterisk_ click2dial/get_record_from_my_channel", {});
 
     } 
     async onClick() {
-        await this.rpc("/my", {})
+        await this.props.record.save();
+        console.log("fcking hell");
     }
 }
 

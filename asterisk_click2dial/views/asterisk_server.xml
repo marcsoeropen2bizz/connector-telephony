@@ -32,11 +32,12 @@
     <field name="arch" type="xml">
         <form string="Asterisk Servers">
             <sheet>
+                <!-- mig attrs="{'invisible': [('active', '=', True)]}"-->
                 <widget
                         name="web_ribbon"
                         title="Archived"
                         bg_color="bg-danger"
-                        attrs="{'invisible': [('active', '=', True)]}"
+                        
                     />
                 <div class="oe_title">
                     <label for="name" string="Server Name" class="oe_edit_only" />
