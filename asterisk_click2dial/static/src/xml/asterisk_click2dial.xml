@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <template>
     <t t-name="asterisk_click2dial.systray.OpenCaller">
         <li class="o_mail_systray_item">
-            <a id="asterisk-open-caller" href="#" title="Open Caller" role="button">
-                <i class="fa fa-phone" role="img" aria-label="Open Caller" />
+            <a id="asterisk-open-caller" href="#" title="Open Caller" role="button" class="o_phone_form_link ms-3 d-inline-flex align-items-center">
+                <i class="fa fa-phone" role="img" aria-label="Open Caller" widget="click2dial" />
+                
             </a>
         </li>
     </t>

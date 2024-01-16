@@ -1,24 +1,29 @@
-/* eslint-disable */
+/** @odoo-module **/
 
-/*  Copyright 2014-2021 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
-    Copyright 2015-2021 Juris Malinens (port to v9)
-    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).   */
 
-odoo.define("asterisk_click2dial.systray.OpenCaller", function (require) {
-    "use strict";
+import { registry } from "@web/core/registry";
+import { Component } from "@odoo/owl";
+// import { useService } from "@web/core/utils/hooks";
+import { _t } from "@web/core/l10n/translation";
 
-    var core = require("web.core");
+class click2dial extends Component{
+    setup() {
+        super.setup();
+        // this.action = useService("action");
+        // this.orm = useService("orm");
+    
+    }
+    showDialButton(){
+        return true;
+    }
+    
+}
+click2dial.template = 'base_phone.updatedphone_widget';
 
-    var _t = core._t;
-    var FieldPhone = require("base_phone.updatedphone_widget").FieldPhone;
-
-    FieldPhone.include({
-        showDialButton: function () {
-            return true;
-        },
-    });
-
-})
+registry.category("fields").add("click2dial", {
+    component: click2dial,
+});
+   
 
 
 

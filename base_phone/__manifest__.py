@@ -15,12 +15,12 @@
     "depends": ["phone_validation", "base_setup", "base"],
     "external_dependencies": {"python": ["phonenumbers"]},
     "data": [
-        # "security/phone_security.xml",
-        # "security/ir.model.access.csv",
-        # "wizard/res_config_settings.xml",
+        "security/phone_security.xml",
+        "security/ir.model.access.csv",
+        "wizard/res_config_settings.xml",
         "views/res_users_view.xml",
-        # #--mig "wizard/reformat_all_phonenumbers_view.xml",
-        # "wizard/number_not_found_view.xml",
+        "wizard/reformat_all_phonenumbers_view.xml",
+        "wizard/number_not_found_view.xml",
     ],
         "assets": {
             "web.assets_backend": ["/base_phone/static/src/js/phone_widget.js", "/base_phone/static/src/xml/phone_widget.xml"],

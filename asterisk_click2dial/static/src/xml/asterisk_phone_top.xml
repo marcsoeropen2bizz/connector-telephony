@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <t t-name="asterisk_click2dial.systray.phone_top">
+        <li class="o_menu_systray">
+            <a id="systray.phone_top" href="#" title="Open Caller" role="button">
+                <i class="fa fa-phone" role="img" aria-label="Open Caller" widget="open_Caller" />
+                
+            </a>
+        </li>
+    </t>
+</template>

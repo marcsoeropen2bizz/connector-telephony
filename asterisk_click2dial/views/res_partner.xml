@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <odoo>
     <!-- remove button from res.partner and add click2dial button -->
     <record id="show_phone_button" model="ir.ui.view">
@@ -6,15 +6,15 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='phone']" position="attributes">
+            <xpath expr="//field[@name='phone']" position="attributes" class="o_phone_form_link ms-3 d-inline-flex align-items-center">
                 <attribute name="widget"></attribute>
             </xpath>
-            <xpath expr="//field[@name='mobile']" position="attributes">
+            <xpath expr="//field[@name='mobile']" position="attributes" class="o_phone_form_link ms-3 d-inline-flex align-items-center">
                 <attribute name="widget"></attribute>
             </xpath>
             <xpath expr="//field[@name='phone']" position="after">
                 <div class="call_button">
-                    <button type="object" name="clickToDial" string="Call">
+                    <button type="object" name="clickToDial" class="o_phone_form_link ms-3 d-inline-flex align-items-center" string="Call">
                         <div class="fa fa-phone" title="phone"></div>
                     </button>
                 </div>
@@ -28,8 +28,8 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='mobile']" position="after">
-                <div class="mobile_call_button">
-                    <button type="object" name="clickToDialMobile" string="Mobile">
+                <div class="mobile_call_button" >
+                    <button type="object" name="clickToDialMobile" string="Mobile" class="o_phone_form_link ms-3 d-inline-flex align-items-center">
                         <div class="fa fa-mobile-phone fa-lg" title="mobile"></div>
                     </button>
                 </div>
